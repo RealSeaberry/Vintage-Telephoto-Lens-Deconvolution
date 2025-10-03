@@ -43,6 +43,7 @@ All test images were captured with a **Sony a7 II** camera. The "Ground Truth" i
 This lens is a solid performer but still exhibits some softness wide open. It was used to photograph a test chart and a distant building to demonstrate a moderate increase in sharpness and resolving power.
 
 #### ISO 12233 Test Chart Comparison
+Note on the test chart: The ISO 12233 chart used for this test was printed on a large sheet of plain paper. As a result, the paper's own texture is visible. One of the clear indicators of the deconvolution's effectiveness is how this paper texture becomes much more distinct and clearly resolved in the "after" image. A professional, lab-quality test chart has been purchased and will be used for future tests.
 
 ![Test Chart Full View](assets/Figure_1.png)
 *Full view of the test chart before and after deconvolution.*
