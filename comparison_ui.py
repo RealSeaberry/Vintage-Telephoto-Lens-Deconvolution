@@ -11,29 +11,33 @@ from skimage.metrics import mean_squared_error as mse
 class ImageComparisonApp:
     """
     GUI application to generate an academic-style comparison plot.
-    - Loads ground truth image without any pre-processing.
-    - Matches comparison images to the ground truth's format (color/grayscale).
+    - Loads the original image without any pre-processing.
+    - Matches comparison images to the original's format (color/grayscale).
     - Allows synchronized magnification via ROI selection.
     """
     def __init__(self, root):
         self.root = root
-        self.root.title("Academic Image Comparison Tool")
-        self.ground_truth_path = ""
+        self.root.title("Image Comparison Tool")
+        self.original_image_path = ""
         self.comparison_paths = []
         self.roi_coords = None
 
         # --- GUI Elements ---
         self.main_frame = tk.Frame(root, padx=10, pady=10)
         self.main_frame.pack()
-        self.gt_label = tk.Label(self.main_frame, text="1. Select Ground Truth Image (No Pre-processing):")
-        self.gt_label.pack(anchor="w")
-        self.gt_frame = tk.Frame(self.main_frame)
-        self.gt_frame.pack(fill="x", pady=5)
-        self.gt_path_label = tk.Label(self.gt_frame, text="No file selected", fg="gray", width=50, anchor="w")
-        self.gt_path_label.pack(side="left")
-        self.gt_button = tk.Button(self.gt_frame, text="Browse...", command=self.load_ground_truth)
-        self.gt_button.pack(side="right")
-        self.comp_label = tk.Label(self.main_frame, text="2. Select Comparison (e.g., Deconvolved) Images:")
+        
+        # Changed "Ground Truth" to "Original Image"
+        self.original_label = tk.Label(self.main_frame, text="1. Select Original Image (Before Processing):")
+        self.original_label.pack(anchor="w")
+        
+        self.original_frame = tk.Frame(self.main_frame)
+        self.original_frame.pack(fill="x", pady=5)
+        self.original_path_label = tk.Label(self.original_frame, text="No file selected", fg="gray", width=50, anchor="w")
+        self.original_path_label.pack(side="left")
+        self.original_button = tk.Button(self.original_frame, text="Browse...", command=self.load_original_image)
+        self.original_button.pack(side="right")
+        
+        self.comp_label = tk.Label(self.main_frame, text="2. Select Comparison Image(s) (After Processing):")
         self.comp_label.pack(anchor="w", pady=(10, 0))
         self.comp_frame = tk.Frame(self.main_frame)
         self.comp_frame.pack(fill="x", pady=5)
@@ -46,15 +50,15 @@ class ImageComparisonApp:
         self.generate_button = tk.Button(self.main_frame, text="Generate Comparison Plot", command=self.generate_plot)
         self.generate_button.pack(pady=20)
 
-    def load_ground_truth(self):
-        """Opens a file dialog to select the ground truth image."""
+    def load_original_image(self):
+        """Opens a file dialog to select the original, unprocessed image."""
         path = filedialog.askopenfilename(
-            title="Select Ground Truth Image",
+            title="Select Original Image",
             filetypes=[("Image Files", "*.png *.jpg *.jpeg *.tif *.bmp")]
         )
         if path:
-            self.ground_truth_path = path
-            self.gt_path_label.config(text=path.split('/')[-1], fg="black")
+            self.original_image_path = path
+            self.original_path_label.config(text=path.split('/')[-1], fg="black")
 
     def load_comparison_images(self):
         """Opens a file dialog to select one or more comparison images."""
@@ -70,9 +74,9 @@ class ImageComparisonApp:
                     
     def clear_selections(self):
         """Clears all selected image paths."""
-        self.ground_truth_path = ""
+        self.original_image_path = ""
         self.comparison_paths = []
-        self.gt_path_label.config(text="No file selected", fg="gray")
+        self.original_path_label.config(text="No file selected", fg="gray")
         self.comp_listbox.delete(0, tk.END)
 
     def _select_roi_callback(self, eclick, erelease):
@@ -98,32 +102,32 @@ class ImageComparisonApp:
 
     def generate_plot(self):
         """Validates selections, asks for ROI, and generates the plot."""
-        if not self.ground_truth_path or not self.comparison_paths:
-            messagebox.showerror("Error", "Please select a ground truth image and at least one comparison image.")
+        if not self.original_image_path or not self.comparison_paths:
+            messagebox.showerror("Error", "Please select an original image and at least one comparison image.")
             return
 
         try:
-            # Load ground truth image AS IS (IMREAD_UNCHANGED)
-            gt_image = cv2.imread(self.ground_truth_path, cv2.IMREAD_UNCHANGED)
-            if gt_image is None:
-                raise IOError(f"Failed to load ground truth image: {self.ground_truth_path}")
+            # Load original image AS IS (IMREAD_UNCHANGED)
+            original_image = cv2.imread(self.original_image_path, cv2.IMREAD_UNCHANGED)
+            if original_image is None:
+                raise IOError(f"Failed to load original image: {self.original_image_path}")
 
-            # Check if ground truth is grayscale or color
-            is_gt_grayscale = len(gt_image.shape) == 2
+            # Check if original is grayscale or color
+            is_original_grayscale = len(original_image.shape) == 2
             
             # For ROI selection display, convert BGR to RGB if needed
-            display_gt = cv2.cvtColor(gt_image, cv2.COLOR_BGR2RGB) if not is_gt_grayscale else gt_image
+            display_original = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB) if not is_original_grayscale else original_image
 
-            # Get ROI from the user on the correctly colored ground truth image
-            roi = self._get_roi_from_user(display_gt)
+            # Get ROI from the user on the correctly colored original image
+            roi = self._get_roi_from_user(display_original)
             
-            # --- Load and process all images based on ROI and GT format ---
+            # --- Load and process all images based on ROI and original image format ---
             if roi:
                 x1, y1, x2, y2 = roi
-                cropped_gt = gt_image[y1:y2, x1:x2]
+                cropped_original = original_image[y1:y2, x1:x2]
                 plot_title = "Image Comparison (Magnified Region)"
             else:
-                cropped_gt = gt_image
+                cropped_original = original_image
                 plot_title = "Image Comparison (Full View)"
 
             cropped_comps = []
@@ -132,19 +136,17 @@ class ImageComparisonApp:
                 if img is None:
                     raise IOError(f"Failed to load comparison image: {path}")
                 
-                # --- Match format to Ground Truth ---
+                # --- Match format to Original Image ---
                 is_comp_grayscale = len(img.shape) == 2
                 
-                if is_gt_grayscale and not is_comp_grayscale:
-                    # Convert comparison to grayscale if GT is grayscale
+                if is_original_grayscale and not is_comp_grayscale:
                     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                elif not is_gt_grayscale and is_comp_grayscale:
-                    # Convert comparison to color if GT is color
+                elif not is_original_grayscale and is_comp_grayscale:
                     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-                # Resize comparison image to match ground truth *before* cropping
-                if img.shape[:2] != gt_image.shape[:2]:
-                    img = cv2.resize(img, (gt_image.shape[1], gt_image.shape[0]))
+                # Resize comparison image to match original *before* cropping
+                if img.shape[:2] != original_image.shape[:2]:
+                    img = cv2.resize(img, (original_image.shape[1], original_image.shape[0]))
                 
                 # Crop the processed comparison image
                 if roi:
@@ -153,7 +155,7 @@ class ImageComparisonApp:
                 else:
                     cropped_comps.append(img)
             
-            self.create_academic_plot(cropped_gt, cropped_comps, self.comparison_paths, plot_title)
+            self.create_academic_plot(cropped_original, cropped_comps, self.comparison_paths, plot_title)
 
         except Exception as e:
             messagebox.showerror("Processing Error", f"An error occurred: {e}")
@@ -161,20 +163,20 @@ class ImageComparisonApp:
             traceback.print_exc()
 
     @staticmethod
-    def create_academic_plot(gt_image, comp_images, comp_paths, title):
+    def create_academic_plot(original_image, comp_images, comp_paths, title):
         """Creates and displays the final matplotlib plot."""
         num_images = len(comp_images) + 1
         fig, axes = plt.subplots(1, num_images, figsize=(5 * num_images, 6))
         if num_images == 1: axes = [axes]
 
-        is_grayscale = len(gt_image.shape) == 2
+        is_grayscale = len(original_image.shape) == 2
         
-        # --- Plot Ground Truth ---
+        # --- Plot Original Image ---
         # Convert BGR to RGB ONLY for display, or use grayscale map
-        display_gt = cv2.cvtColor(gt_image, cv2.COLOR_BGR2RGB) if not is_grayscale else gt_image
-        cmap_gt = 'gray' if is_grayscale else None
-        axes[0].imshow(display_gt, cmap=cmap_gt)
-        axes[0].set_title("Ground Truth")
+        display_original = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB) if not is_grayscale else original_image
+        cmap_original = 'gray' if is_grayscale else None
+        axes[0].imshow(display_original, cmap=cmap_original)
+        axes[0].set_title("Original (Before)") # Changed from "Ground Truth"
         axes[0].axis('off')
 
         # --- Plot Comparison Images ---
@@ -185,15 +187,14 @@ class ImageComparisonApp:
             cmap_comp = 'gray' if is_grayscale else None
             ax.imshow(display_comp, cmap=cmap_comp)
             filename = comp_paths[i].split('/')[-1]
-            ax.set_title(f"Comparison:\n{filename}")
+            ax.set_title(f"Deconvolved (After):\n{filename}")
             ax.axis('off')
 
             try:
-                # Add channel_axis=-1 for color images, scikit-image handles grayscale automatically
-                psnr_val = psnr(gt_image, comp_image, data_range=255)
-                # For SSIM, we must specify the channel axis for color images
-                ssim_val = ssim(gt_image, comp_image, data_range=255, channel_axis=-1 if not is_grayscale else None)
-                mse_val = mse(gt_image, comp_image)
+                # Metrics are calculated against the original image
+                psnr_val = psnr(original_image, comp_image, data_range=255)
+                ssim_val = ssim(original_image, comp_image, data_range=255, channel_axis=-1 if not is_grayscale else None)
+                mse_val = mse(original_image, comp_image)
                 
                 metrics_text = (f"PSNR: {psnr_val:.2f} dB\n"
                                 f"SSIM: {ssim_val:.4f}\n"
