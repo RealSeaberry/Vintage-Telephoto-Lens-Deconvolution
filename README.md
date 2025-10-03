@@ -36,7 +36,7 @@ The **Wiener filter** is a sophisticated method for this "division." It's partic
 
 ## Real-World Examples
 
-All test images were captured with a **Sony a7 II** camera. The "Ground Truth" images are the original, blurry photos, and the "Comparison" images are the result after processing with this tool.
+All test images were captured with a **Sony a7 II** camera. The blurry photos images are the original ones, and the "Comparison" images are the result after processing with this tool.
 
 ### Test Case 1: Canon FD 300mm f/5.6 S.C.
 
