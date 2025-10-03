@@ -38,27 +38,28 @@ The **Wiener filter** is a sophisticated method for this "division." It's partic
 
 All test images were captured with a **Sony a7 II** camera. The "Ground Truth" images are the original, blurry photos, and the "Comparison" images are the result after processing with this tool.
 
-### Test Case 1: Canon FD 300mm f/5.6 S.S.C.
+### Test Case 1: Canon FD 300mm f/5.6 S.C.
 
 This lens is a solid performer but still exhibits some softness wide open. It was used to photograph a test chart and a distant building to demonstrate a moderate increase in sharpness and resolving power.
 
 #### ISO 12233 Test Chart Comparison
+Note on the test chart: The ISO 12233 chart used for this test was printed on a large sheet of plain paper. As a result, the paper's own texture is visible. One of the clear indicators of the deconvolution's effectiveness is how this paper texture becomes much more distinct and clearly resolved in the "after" image. A professional, lab-quality test chart has been purchased and will be used for future tests.
 
-![Test Chart Full View](test_results/Figure_1.png)
+![Test Chart Full View](assets/Figure_1.png)
 *Full view of the test chart before and after deconvolution.*
 
-![Test Chart Magnified](test_results/Figure_2.png)
+![Test Chart Magnified](assets/Figure_2.png)
 *Magnified region showing improved resolution of fine lines.*
 
-![Test Chart Center Detail](test_results/Figure_3.png)
+![Test Chart Center Detail](assets/Figure_3.png)
 *Center detail demonstrating increased acutance and clarity.*
 
 #### Distant Building Comparison
 
-![Building Full View](test_results/Figure_6.png)
+![Building Full View](assets/Figure_6.png)
 *Architectural details become clearer and more defined.*
 
-![Building Magnified](test_results/Figure_7.png)
+![Building Magnified](assets/Figure_7.png)
 *A 100% crop shows a significant reduction in haze and an increase in edge sharpness.*
 
 ### Test Case 2: Komura 500mm f/7
@@ -67,10 +68,10 @@ This lens was chosen for its spherical aberration, which creates a very soft, dr
 
 #### Cherry Blossoms Comparison
 
-![Blossoms Full View](test_results/Figure_4.png)
+![Blossoms Full View](assets/Figure_4.png)
 *The overall image transforms from soft-focus to sharp, with better separation between the blossoms and the background.*
 
-![Blossoms Magnified](test_results/Figure_5.png)
+![Blossoms Magnified](assets/Figure_5.png)
 *Magnified view showing the recovery of fine textures in the petals that were lost in the original's glow.*
 
 ---
@@ -129,7 +130,7 @@ During testing, I discovered a workflow that significantly improves the final im
 
 1.  **Deconvolution Amplifies Noise:** A fundamental characteristic of any deconvolution process is that it enhances not only image detail but also existing noise. A noisy input image will result in a noisy and artifact-ridden output.
 
-2.  **Pre-process with AI Noise Reduction:** To counteract this, I found that using an advanced noise reduction tool **before** deconvolution yields a much cleaner and sharper final image. Specifically, processing the original RAW photo with **Adobe Camera Raw's AI Denoise** feature first, and then feeding the resulting DNG file into this deconvolution tool, produces the best results. The AI effectively removes random noise without destroying fine detail, providing a clean slate for the deconvolution algorithm to work on.
+2.  **Pre-process with AI Noise Reduction:** To counteract this, I found that using an advanced noise reduction tool **before** deconvolution yields a much cleaner and sharper final image. Specifically, processing the original RAW photo with **Adobe Camera Raw's AI Denoise** feature first, and then feeding the resulting image into this deconvolution tool, produces the best results. The AI effectively removes random noise without destroying fine detail, providing a clean slate for the deconvolution algorithm to work on.
 
 3.  **Superior to Standard Sharpening:** The results from this PSF-based deconvolution method are often significantly better than what can be achieved with standard sharpening filters, including those built into Adobe Camera Raw or other editors.
 
@@ -145,24 +146,13 @@ During testing, I discovered a workflow that significantly improves the final im
 *   Matplotlib
 *   scikit-image
 
-## Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/vintage-lens-deconvolution.git
-    cd vintage-lens-deconvolution
-    ```
-
-2.  Install the required Python packages:
-    ```bash
-    pip install opencv-python-headless numpy pyqt6 matplotlib scikit-image
-    ```
 
 ## How to Use
 
 ### 1. Deconvolution Tool (`deconvolution_ui.py`)
 
-1.  Run the deconvolution.exe
+1.  Run the DeconvolutionTool.exe
 2.  **Select Input Image or Video:** Click "Browse" to select the blurry photo or video you want to restore.
 3.  **Select PSF File:** Click "Browse" to select the PSF image you created.
 4.  **Select Output Path:** Choose where to save the restored file.
