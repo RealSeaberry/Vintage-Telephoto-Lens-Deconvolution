@@ -129,7 +129,7 @@ During testing, I discovered a workflow that significantly improves the final im
 
 1.  **Deconvolution Amplifies Noise:** A fundamental characteristic of any deconvolution process is that it enhances not only image detail but also existing noise. A noisy input image will result in a noisy and artifact-ridden output.
 
-2.  **Pre-process with AI Noise Reduction:** To counteract this, I found that using an advanced noise reduction tool **before** deconvolution yields a much cleaner and sharper final image. Specifically, processing the original RAW photo with **Adobe Camera Raw's AI Denoise** feature first, and then feeding the resulting DNG file into this deconvolution tool, produces the best results. The AI effectively removes random noise without destroying fine detail, providing a clean slate for the deconvolution algorithm to work on.
+2.  **Pre-process with AI Noise Reduction:** To counteract this, I found that using an advanced noise reduction tool **before** deconvolution yields a much cleaner and sharper final image. Specifically, processing the original RAW photo with **Adobe Camera Raw's AI Denoise** feature first, and then feeding the resulting image into this deconvolution tool, produces the best results. The AI effectively removes random noise without destroying fine detail, providing a clean slate for the deconvolution algorithm to work on.
 
 3.  **Superior to Standard Sharpening:** The results from this PSF-based deconvolution method are often significantly better than what can be achieved with standard sharpening filters, including those built into Adobe Camera Raw or other editors.
 
