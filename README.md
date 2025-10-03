@@ -38,7 +38,7 @@ The **Wiener filter** is a sophisticated method for this "division." It's partic
 
 All test images were captured with a **Sony a7 II** camera. The "Ground Truth" images are the original, blurry photos, and the "Comparison" images are the result after processing with this tool.
 
-### Test Case 1: Canon FD 300mm f/5.6 S.S.C.
+### Test Case 1: Canon FD 300mm f/5.6 S.C.
 
 This lens is a solid performer but still exhibits some softness wide open. It was used to photograph a test chart and a distant building to demonstrate a moderate increase in sharpness and resolving power.
 
