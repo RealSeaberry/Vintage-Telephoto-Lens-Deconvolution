@@ -145,24 +145,13 @@ During testing, I discovered a workflow that significantly improves the final im
 *   Matplotlib
 *   scikit-image
 
-## Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/vintage-lens-deconvolution.git
-    cd vintage-lens-deconvolution
-    ```
-
-2.  Install the required Python packages:
-    ```bash
-    pip install opencv-python-headless numpy pyqt6 matplotlib scikit-image
-    ```
 
 ## How to Use
 
 ### 1. Deconvolution Tool (`deconvolution_ui.py`)
 
-1.  Run the deconvolution.exe
+1.  Run the DeconvolutionTool.exe
 2.  **Select Input Image or Video:** Click "Browse" to select the blurry photo or video you want to restore.
 3.  **Select PSF File:** Click "Browse" to select the PSF image you created.
 4.  **Select Output Path:** Choose where to save the restored file.
