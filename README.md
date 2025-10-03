@@ -44,21 +44,21 @@ This lens is a solid performer but still exhibits some softness wide open. It wa
 
 #### ISO 12233 Test Chart Comparison
 
-![Test Chart Full View](image1.jpg)
+![Test Chart Full View](test_results/Figure_1.png)
 *Full view of the test chart before and after deconvolution.*
 
-![Test Chart Magnified](image2.jpg)
+![Test Chart Magnified](test_results/Figure_2.png)
 *Magnified region showing improved resolution of fine lines.*
 
-![Test Chart Center Detail](image3.jpg)
+![Test Chart Center Detail](test_results/Figure_3.png)
 *Center detail demonstrating increased acutance and clarity.*
 
 #### Distant Building Comparison
 
-![Building Full View](image6.jpg)
+![Building Full View](test_results/Figure_6.png)
 *Architectural details become clearer and more defined.*
 
-![Building Magnified](image7.jpg)
+![Building Magnified](test_results/Figure_7.png)
 *A 100% crop shows a significant reduction in haze and an increase in edge sharpness.*
 
 ### Test Case 2: Komura 500mm f/7
@@ -67,10 +67,10 @@ This lens was chosen for its spherical aberration, which creates a very soft, dr
 
 #### Cherry Blossoms Comparison
 
-![Blossoms Full View](image4.jpg)
+![Blossoms Full View](test_results/Figure_4.png)
 *The overall image transforms from soft-focus to sharp, with better separation between the blossoms and the background.*
 
-![Blossoms Magnified](image5.jpg)
+![Blossoms Magnified](test_results/Figure_5.png)
 *Magnified view showing the recovery of fine textures in the petals that were lost in the original's glow.*
 
 ---
